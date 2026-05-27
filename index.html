@@ -591,13 +591,13 @@
         let scoresByCompetency = {};
         let sortedCompetencies = [];
 
-        // 로컬스토리지에서 이전에 저장된 API URL 로드
-        let configSheetUrl = localStorage.getItem('gam_sheet_url') || '';
+        // GAS Web App URL 하드코딩 (기어 아이콘으로 변경 가능)
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzbKRsXsaNTZARTTYhTfH6CUJsJXLFFYmSzbrn8ev1suu365BkQM7xz05qXmW2cnmU/exec";
+        let configSheetUrl = localStorage.getItem('gam_sheet_url') || DEFAULT_SHEET_URL;
 
         window.onload = function() {
-            if(configSheetUrl) {
-                document.getElementById('config-sheet-url').value = configSheetUrl;
-            }
+            // 저장된 URL 또는 기본 URL을 설정 입력창에 반영
+            document.getElementById('config-sheet-url').value = configSheetUrl;
             // 아이콘 전부 인라인 SVG로 구현되어 있어 lucide.createIcons() 불필요
         };
 
