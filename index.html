@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="flex items-center space-x-4">
-            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full border border-gray-700 font-semibold uppercase tracking-widest">Vercel v1.0</span>
+            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full border border-gray-700 font-semibold uppercase tracking-widest">v1.1.0</span>
             <!-- API Endpoint 설정 기어 버튼 -->
             <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-white transition-all p-2 rounded-lg bg-gray-900/40 hover:bg-gray-800/80 border border-gray-800" title="구글 API 연동 설정">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -395,7 +395,7 @@
             C08: { 
                 id: "C08", 
                 name: "소통 및 메시지 전달 역량", 
-                group: "RELATIONSHIP", 
+                group: "CUSTOMER", // Fix ⑤: RELATIONSHIP → CUSTOMER 재분류. 소통·메시지 전달은 고객 접점 역량에 직접 부합.
                 style: "의사소통 (Communication)", 
                 desc: "자신과 조직의 생각, 복잡한 지식, 추상적인 비즈니스 아이디어를 아주 명확하고 설득력 높은 언어와 시각적 메시지로 전환하여 대중의 마음을 움직이는 소통의 대가입니다. 청중의 눈높이와 흥미 요소에 완벽히 정합된 스토리텔링을 활용하여, 다소 딱딱할 수 있는 기안이나 PT도 매력적이고 이해하기 쉽게 전달하여 폭넓은 행동 수용과 열정적인 동참을 이끌어냅니다.", 
                 task: "대형 제안 프레젠테이션(PT), 대표 수주 보고, 사내 변화 수용 스피치 업무" 
@@ -676,19 +676,20 @@
             const endIndex = Math.min(startIndex + questionsPerPage, totalQuestions);
             const currentQuestions = questions.slice(startIndex, endIndex);
 
-            const firstQ = currentQuestions[0];
-            const sampleComp = competencies[firstQ.cId];
-            const groupMeta = groups[sampleComp.group];
-            
-            document.getElementById('group-title').textContent = `${groupMeta.name} 역량 분석 진행중`;
+            // Fix ①: 현재 페이지에 존재하는 모든 역량군을 수집해 타이틀·내비게이터에 반영
+            const groupKeysOnPage = [...new Set(currentQuestions.map(q => competencies[q.cId].group))];
+            const groupTitleText = groupKeysOnPage.map(k => groups[k].name).join(' · ');
+
+            document.getElementById('group-title').textContent = `${groupTitleText} 역량 분석 진행중`;
             document.getElementById('progress-text').textContent = `${endIndex} / ${totalQuestions} 문항 완료`;
             
             const percent = (endIndex / totalQuestions) * 100;
             document.getElementById('progress-bar').style.width = `${percent}%`;
 
+            // 현재 페이지에 포함된 역량군을 모두 하이라이팅
             document.querySelectorAll('.group-nav').forEach(nav => {
                 nav.classList.remove('text-blue-400', 'font-bold', 'border-b', 'border-blue-400');
-                if (nav.getAttribute('data-group') === groupMeta.key) {
+                if (groupKeysOnPage.includes(nav.getAttribute('data-group'))) {
                     nav.classList.add('text-blue-400', 'font-bold', 'border-b', 'border-blue-400');
                 }
             });
@@ -711,7 +712,7 @@
                             const isChecked = answers[q.id] === score;
                             const activeClass = isChecked ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white border-transparent glow-purple scale-[1.03]' : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700';
                             return `
-                                <button type="button" onclick="selectScore(${q.id}, ${score})" class="flex flex-col items-center justify-between p-2.5 md:p-3 rounded-xl border text-center transition-all active:scale-95 cursor-pointer ${activeClass}">
+                                <button type="button" onclick="selectScore(${q.id}, ${score})" data-qid="${q.id}" data-score="${score}" class="flex flex-col items-center justify-between p-2.5 md:p-3 rounded-xl border text-center transition-all active:scale-95 cursor-pointer ${activeClass}">
                                     <span class="text-base md:text-lg font-bold font-mono">${score}</span>
                                     <span class="text-[9px] md:text-[10px] mt-1.5 font-normal break-keep leading-tight">${labels[score - 1]}</span>
                                 </button>
@@ -734,7 +735,18 @@
 
         function selectScore(qId, score) {
             answers[qId] = score;
-            loadPage();
+            // Fix ②: loadPage() 전체 재렌더링 대신 해당 문항 버튼만 DOM 직접 업데이트
+            const ACTIVE_CLASS   = 'bg-gradient-to-br from-blue-600 to-purple-600 text-white border-transparent glow-purple scale-[1.03]';
+            const INACTIVE_CLASS = 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700';
+            document.querySelectorAll(`[data-qid="${qId}"]`).forEach(btn => {
+                const btnScore = parseInt(btn.getAttribute('data-score'));
+                // 공통 클래스 유지 후 상태 클래스만 교체
+                btn.className = btn.className
+                    .replace(ACTIVE_CLASS, '')
+                    .replace(INACTIVE_CLASS, '')
+                    .trim();
+                btn.className += ' ' + (btnScore === score ? ACTIVE_CLASS : INACTIVE_CLASS);
+            });
         }
 
         function prevPage() {
@@ -796,9 +808,10 @@
                 scoresByGroup[gKey] = parseFloat((scoresByGroup[gKey] / countByGroup[gKey]).toFixed(2));
             });
 
+            // Fix ⑥: 동점 시 임의적 ID 번호 순(C01 우선) 편향 제거 → 한국어 역량명 가나다순으로 결정
             sortedCompetencies = Object.keys(scoresByCompetency).map(cId => {
                 return { id: cId, name: competencies[cId].name, score: scoresByCompetency[cId] };
-            }).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+            }).sort((a, b) => b.score - a.score || a.name.localeCompare(b.name, 'ko'));
 
             switchView('step-assessment', 'step-result');
 
@@ -1060,10 +1073,11 @@
                 strength_5: sortedCompetencies[4].name
             };
 
-            // CORS 프리플라이트 제약 우회를 위한 text/plain 처리 및 리디렉션 대응
+            // Fix ③: mode:"no-cors" 응답은 opaque response로 서버 성공 여부를 확인할 수 없음.
+            // 성공 토스트는 "전송 요청 완료" 수준으로만 표시하고, 실제 적재 확인은 Sheets에서 수행하도록 안내.
             fetch(configSheetUrl, {
                 method: "POST",
-                mode: "no-cors", // 구글 리디렉션 흐름 대응용 설정
+                mode: "no-cors",
                 headers: {
                     "Content-Type": "text/plain"
                 },
@@ -1071,17 +1085,17 @@
             })
             .then(() => {
                 btn.innerHTML = originalText;
-                showToast("구글 스프레드시트 데이터베이스에 성공적으로 적재되었습니다!");
+                showToast("제출 요청이 전송되었습니다. Google Sheets에서 결과를 확인해 주세요.");
             })
             .catch(error => {
                 btn.innerHTML = originalText;
-                showToast("데이터 전송 중 오류가 발생했습니다. 연동 주소를 확인하세요.", false);
+                showToast("네트워크 오류로 전송에 실패했습니다. API 주소 및 네트워크 상태를 확인하세요.", false);
                 console.error("API 전송 에러:", error);
             });
         }
 
-        // 요약 리포트 클립보드 복사
-        function copyToClipboardText() {
+        // Fix ④: document.execCommand('copy') deprecated → navigator.clipboard.writeText() 사용
+        async function copyToClipboardText() {
             const textToCopy = `
 [GAM CONSULTING 역량 및 강점 진단 요약]
 * 대상자: ${userInfo.dept} / ${userInfo.position} ${userInfo.name}
@@ -1101,24 +1115,28 @@
   5위: ${sortedCompetencies[4].name} (스타일: ${competencies[sortedCompetencies[4].id].style})
             `.trim();
 
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    showToast("종합 리포트 요약본이 클립보드에 복사되었습니다!");
+                    return;
+                } catch (err) {
+                    // 권한 거부 등 → fallback으로 진행
+                }
+            }
+            // Fallback: textarea 방식 (구형 브라우저 호환)
             const textarea = document.createElement('textarea');
             textarea.value = textToCopy;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.select();
-            
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("종합 리포트 요약본이 클립보드에 복사되었습니다!");
-                } else {
-                    showToast("복사 권한이 활성화되지 않았습니다.", false);
-                }
-            } catch (err) {
+                document.execCommand('copy');
+                showToast("종합 리포트 요약본이 클립보드에 복사되었습니다!");
+            } catch (e) {
                 showToast("복사 중 에러가 발생했습니다.", false);
             }
-            
             document.body.removeChild(textarea);
         }
 
