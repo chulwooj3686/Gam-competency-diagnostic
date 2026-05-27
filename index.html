@@ -1004,7 +1004,7 @@
         function saveAsPDF() {
             const element = document.getElementById('pdf-export-area');
             const saveBtn = document.querySelector('button[onclick="saveAsPDF()"]');
-            
+
             const originalHtml = saveBtn.innerHTML;
             saveBtn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -1014,20 +1014,82 @@
                 <span>PDF 리포트 생성 중...</span>
             `;
 
+            // ── PDF 전용 라이트 테마 주입 ──────────────────────────────────
+            // html2canvas는 backdrop-filter/다크 배경을 검게 렌더링하므로
+            // 캡처 직전 밝은 색상으로 임시 전환 후 완료 시 복원
+            const pdfStyle = document.createElement('style');
+            pdfStyle.id = 'pdf-light-override';
+            pdfStyle.textContent = `
+                #pdf-export-area, #pdf-export-area * {
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                }
+                #pdf-export-area {
+                    background: #FFFFFF !important;
+                    color: #1F2937 !important;
+                }
+                #pdf-export-area .glass-card {
+                    background: #F8FAFC !important;
+                    border: 1px solid #E2E8F0 !important;
+                    box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+                }
+                #pdf-export-area .bg-gray-900\\/60,
+                #pdf-export-area .bg-gray-900\\/80,
+                #pdf-export-area .bg-gray-950\\/60,
+                #pdf-export-area .bg-gray-950\\/80 {
+                    background: #F1F5F9 !important;
+                }
+                #pdf-export-area h2,
+                #pdf-export-area h3,
+                #pdf-export-area h4,
+                #pdf-export-area .text-white,
+                #pdf-export-area .text-gray-200,
+                #pdf-export-area .text-gray-300 {
+                    color: #1E293B !important;
+                }
+                #pdf-export-area .text-gray-400,
+                #pdf-export-area .text-gray-500 {
+                    color: #64748B !important;
+                }
+                #pdf-export-area .text-transparent {
+                    background: none !important;
+                    color: #E8703A !important;
+                    -webkit-text-fill-color: #E8703A !important;
+                }
+                #pdf-export-area .border-gray-800,
+                #pdf-export-area .border-gray-900 {
+                    border-color: #CBD5E1 !important;
+                }
+                #pdf-export-area .bg-gray-900\\/40 {
+                    background: #F8FAFC !important;
+                }
+                #pdf-export-area .bg-gray-950 {
+                    background: #E2E8F0 !important;
+                }
+                #pdf-export-area .text-blue-400  { color: #2563EB !important; }
+                #pdf-export-area .text-purple-400 { color: #7C3AED !important; }
+                #pdf-export-area .font-mono { color: #E8703A !important; }
+            `;
+            document.head.appendChild(pdfStyle);
+            // ─────────────────────────────────────────────────────────────
+
             const opt = {
-                margin:       [12, 12, 12, 12],
-                filename:     `GAM_역량종합리포트_${userInfo.name}_${userInfo.position}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0B0F19' },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                margin:      [12, 12, 12, 12],
+                filename:    `GAM_역량종합리포트_${userInfo.name}_${userInfo.position}.pdf`,
+                image:       { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#FFFFFF',
+                               logging: false, removeContainer: true },
+                jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save()
                 .then(() => {
+                    document.getElementById('pdf-light-override')?.remove();
                     saveBtn.innerHTML = originalHtml;
-                    showToast("종합 역량 리포트 PDF가 안전하게 내보내기 되었습니다.");
+                    showToast("종합 역량 리포트 PDF가 저장되었습니다.");
                 })
                 .catch(err => {
+                    document.getElementById('pdf-light-override')?.remove();
                     saveBtn.innerHTML = originalHtml;
                     showToast("PDF 생성 처리 중 오류가 발생했습니다.", false);
                     console.error(err);
