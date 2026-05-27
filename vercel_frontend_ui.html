@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAM 6대 역량 및 강점 스타일 진단 솔루션</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: 고운 돋움 및 Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf.js for premium quality client-side PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Gowun Dodum', 'Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0B0F19',
+                        glassBg: 'rgba(17, 24, 39, 0.7)',
+                        cyberBlue: '#2563EB',
+                        cyberPurple: '#7C3AED',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0F19;
+            font-family: 'Gowun Dodum', 'Noto Sans KR', sans-serif;
+            color: #F3F4F6;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        /* Glassmorphism utility */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* Glowing neon animations */
+        .glow-blue {
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+        }
+        .glow-purple {
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+        }
+        /* Hide utilities for wizard step transitions */
+        .step-view {
+            display: none;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .step-view.active {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- 글로벌 헤더 -->
+    <header class="glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-800">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                <span class="text-white font-bold text-lg">G</span>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">GAM CONSULTING</h1>
+                <p class="text-xs text-gray-400">Competency & Strength Diagnostic Toolkit</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full border border-gray-700 font-semibold uppercase tracking-widest">Vercel v1.0</span>
+            <!-- API Endpoint 설정 기어 버튼 -->
+            <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-white transition-all p-2 rounded-lg bg-gray-900/40 hover:bg-gray-800/80 border border-gray-800" title="구글 API 연동 설정">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 에어리어 -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 md:py-12 flex flex-col justify-center">
+
+        <!-- STEP 1: 진단 도입부 -->
+        <div id="step-intro" class="step-view active max-w-2xl mx-auto w-full">
+            <div class="glass-card p-8 rounded-3xl glow-blue relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-60 h-60 bg-gradient-to-br from-blue-600/20 to-purple-600/10 rounded-full blur-3xl"></div>
+                
+                <div class="mb-8 text-center">
+                    <span class="px-4 py-1.5 text-xs font-semibold bg-blue-500/10 text-blue-400 rounded-full border border-blue-500/20 uppercase tracking-widest">Core Competency Assessment</span>
+                    <h2 class="text-3xl font-extrabold mt-4 mb-2 tracking-tight text-white">GAM 6대 역량 & 강점 스타일 진단</h2>
+                    <p class="text-gray-400 text-sm">본 솔루션은 비즈니스 핵심역량 20종을 진단하고, 귀하의 본원적 갤럽 강점 스타일과 맞춤형 추천 직무 시나리오를 설계해 드립니다.</p>
+                </div>
+
+                <!-- 심리적 안전감 장치 -->
+                <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 mb-6 flex items-start space-x-3 text-sm">
+                    <div class="text-purple-400 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0-6h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-200">데이터 프라이버시 및 심리적 안전감 보장</h4>
+                        <p class="text-gray-400 mt-1 leading-relaxed text-xs">본 진단의 수집 데이터는 귀하의 동의 하에 인사개발 통계분석용으로만 안전하게 관리됩니다. 주관적 필터 없이 솔직하고 편안하게 임해주시는 것이 가장 정확한 강점 피드백을 도출하는 지름길입니다.</p>
+                    </div>
+                </div>
+
+                <!-- 사용자 필수 정보 입력 폼 -->
+                <form id="user-info-form" onsubmit="startAssessment(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">소속 (부서/팀)</label>
+                        <input type="text" id="user-dept" required placeholder="예: 미래전략본부 인사기획팀" class="w-full bg-gray-950/80 border border-gray-800 focus:border-blue-500 rounded-xl px-4 py-3.5 text-white outline-none transition-all placeholder-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">직급</label>
+                        <input type="text" id="user-position" required placeholder="예: 팀장 / 책임연구원 / 대리" class="w-full bg-gray-950/80 border border-gray-800 focus:border-blue-500 rounded-xl px-4 py-3.5 text-white outline-none transition-all placeholder-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">이름</label>
+                        <input type="text" id="user-name" required placeholder="예: 홍길동" class="w-full bg-gray-950/80 border border-gray-800 focus:border-blue-500 rounded-xl px-4 py-3.5 text-white outline-none transition-all placeholder-gray-600">
+                    </div>
+
+                    <button type="submit" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-purple-500/20 active:scale-[0.99] flex items-center justify-center space-x-2">
+                        <span>역량 및 강점 스타일 진단 시작</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- STEP 2: 진단 테스트 수행부 -->
+        <div id="step-assessment" class="step-view max-w-3xl mx-auto w-full">
+            <div class="glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden">
+                
+                <!-- 상단 진도율 프로그레스 영역 -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center text-sm mb-2">
+                        <span id="group-title" class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 text-base">역량군 로딩중...</span>
+                        <span id="progress-text" class="text-xs text-gray-400 font-mono">0 / 60</span>
+                    </div>
+                    <div class="w-full bg-gray-950 rounded-full h-2 overflow-hidden border border-gray-800">
+                        <div id="progress-bar" class="bg-gradient-to-r from-blue-600 to-purple-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <div id="group-navigator" class="flex justify-between mt-3 text-[10px] text-gray-500 font-semibold px-1">
+                        <span class="group-nav" data-group="THINKING">1. 사고</span>
+                        <span class="group-nav" data-group="EXECUTION">2. 실행</span>
+                        <span class="group-nav" data-group="CUSTOMER">3. 고객</span>
+                        <span class="group-nav" data-group="RELATIONSHIP">4. 관계</span>
+                        <span class="group-nav" data-group="AGILITY">5. 변화</span>
+                        <span class="group-nav" data-group="EXPERTISE">6. 전문성</span>
+                    </div>
+                </div>
+
+                <!-- 질문 리스트 바인딩 영역 -->
+                <div id="questions-container" class="space-y-6 md:space-y-8 min-h-[400px]">
+                    <!-- JS에 의해 동적으로 5문항씩 렌더링됩니다 -->
+                </div>
+
+                <!-- 하단 내비게이션 영역 -->
+                <div class="mt-8 pt-6 border-t border-gray-800 flex justify-between items-center">
+                    <button onclick="prevPage()" id="btn-prev" class="px-5 py-3 rounded-xl border border-gray-700 bg-gray-900/60 hover:bg-gray-800 text-gray-300 hover:text-white transition-all text-sm font-semibold flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        <span>이전</span>
+                    </button>
+                    <button onclick="nextPage()" id="btn-next" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all text-sm font-bold flex items-center space-x-2 shadow-lg shadow-purple-500/10">
+                        <span id="next-btn-text">다음 단계</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- STEP 3: 진단 결과 레포팅 대시보드 -->
+        <div id="step-result" class="step-view max-w-5xl mx-auto w-full">
+            
+            <!-- 인쇄/PDF 저장 영역 외곽 컨테이너 -->
+            <div id="pdf-export-area" class="space-y-8 p-1">
+                
+                <!-- 레포트 헤더 -->
+                <div class="glass-card p-8 rounded-3xl glow-purple relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-48 h-48 bg-gradient-to-br from-purple-600/20 to-pink-500/10 rounded-full blur-2xl"></div>
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                        <div>
+                            <span class="px-4 py-1.5 text-xs font-semibold bg-purple-500/10 text-purple-400 rounded-full border border-purple-500/20 uppercase tracking-widest">Diagnostic Report</span>
+                            <h2 class="text-3xl font-extrabold mt-4 mb-2 tracking-tight text-white">GAM 역량 & 강점 스타일 종합 분석 보고서</h2>
+                            <p class="text-gray-400 text-sm">진단자 개별 맞춤형 성장 지표 및 최상 적합 직무 환경 제언</p>
+                        </div>
+                        <div class="bg-gray-900/60 p-4 rounded-2xl border border-gray-800 text-sm flex flex-col justify-center space-y-1 md:w-64">
+                            <div class="flex justify-between"><span class="text-gray-500">소속:</span><span id="res-dept" class="font-bold text-gray-200">-</span></div>
+                            <div class="flex justify-between"><span class="text-gray-500">직급:</span><span id="res-position" class="font-bold text-gray-200">-</span></div>
+                            <div class="flex justify-between"><span class="text-gray-500">이름:</span><span id="res-name" class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6대 대역량군 종합 분석 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- 레이더 차트 -->
+                    <div class="lg:col-span-5 glass-card p-6 rounded-3xl flex flex-col items-center justify-center min-h-[350px]">
+                        <h3 class="text-lg font-bold text-gray-200 mb-4 tracking-wide text-center">6대 대역량군 밸런스 맵</h3>
+                        <div class="relative w-[300px] h-[300px]" id="chart-parent">
+                            <!-- JS를 통해 동적 SVG 주입 예정 -->
+                        </div>
+                    </div>
+
+                    <!-- 대역량군별 세부 분석 카드 -->
+                    <div class="lg:col-span-7 glass-card p-6 rounded-3xl flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-200 mb-4 tracking-wide">6대 대역량군 진단 점수 상세</h3>
+                            <div id="group-score-bars" class="space-y-4">
+                                <!-- JS에서 각 대그룹별 실점 백분율 바 자동 생성 -->
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-900/50 border border-gray-800 rounded-2xl text-xs text-gray-400 leading-relaxed">
+                            💡 <span class="font-bold text-gray-200">역량군 밸런스 가이드</span>: 각 역량군의 점수는 5점 만점으로 계산됩니다. 수치가 고르게 분산될수록 전방위적 제어 능력이 높음을 뜻하며, 특정 분야의 돌출은 귀하의 핵심 실무 무기를 상징합니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOP 5 강점 스타일 & 추천 업무 매핑 -->
+                <div class="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white tracking-wide">귀하의 핵심 기여 기저: TOP 5 강점 스타일</h3>
+                        <p class="text-gray-400 text-xs mt-1">20개 정교 역량 중 최상위 점수를 획득한 5대 강점과, 그에 부합하는 갤럽 스트렝스 스타일 매핑 결과입니다.</p>
+                    </div>
+
+                    <div id="top5-strengths-container" class="space-y-4">
+                        <!-- JS에서 Top 5 상세 카드 자동 바인딩 -->
+                    </div>
+                </div>
+
+                <!-- 성장형 격려 종합 피드백 -->
+                <div class="glass-card p-6 md:p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-wide">GAM 종합 리더십 성장 피드백</h3>
+                    <div id="developmental-feedback" class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <!-- 동적으로 강점에 걸맞는 문구 매핑 -->
+                    </div>
+                </div>
+
+            </div> <!-- 인쇄 영역 마감 -->
+
+            <!-- 리포트 하단 최종 액션 버튼들 -->
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="saveAsPDF()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/10 flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span>종합 리포트 PDF 저장</span>
+                </button>
+                <button onclick="submitResultToGoogle()" id="btn-submit-sheets" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-purple-500/10 flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    <span>최종 결과 제출 및 DB화</span>
+                </button>
+                <button onclick="copyToClipboardText()" class="w-full sm:w-auto px-8 py-4 border border-gray-700 bg-gray-900 hover:bg-gray-800 text-gray-300 font-bold rounded-xl transition-all flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    <span>요약 텍스트 복사</span>
+                </button>
+            </div>
+
+            <!-- 다시 진단하기 -->
+            <div class="mt-8 text-center">
+                <button onclick="resetAssessment()" class="text-xs text-gray-500 hover:text-gray-300 transition-all underline">새로운 데이터로 다시 진단하기</button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- 글로벌 푸터 -->
+    <footer class="mt-12 py-6 border-t border-gray-900 bg-gray-950/60 text-center text-xs text-gray-500">
+        <p>© 2026 GAM CONSULTING. All Rights Reserved.</p>
+    </footer>
+
+    <!-- 알림 메시지용 모달/토스트 -->
+    <div id="toast-message" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-out flex items-center space-x-2 bg-gray-900 border border-gray-800 text-white py-3 px-5 rounded-xl shadow-2xl">
+        <span id="toast-icon" class="text-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </span>
+        <span id="toast-text" class="text-xs font-semibold"></span>
+    </div>
+
+    <!-- 구글 시트 연동 개발 및 관리자 설정 모달 -->
+    <div id="config-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+        <div class="glass-card max-w-lg w-full rounded-3xl p-6 md:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-800">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+                    <span class="text-blue-400">⚙️</span>
+                    <span>Google Apps Script API 설정</span>
+                </h3>
+                <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-white transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-2">Google Apps Script Web App URL</label>
+                    <input type="text" id="config-sheet-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-gray-950/80 border border-gray-800 focus:border-blue-500 rounded-xl px-4 py-3 text-white outline-none transition-all placeholder-gray-700 text-xs">
+                    <p class="text-[10px] text-gray-500 mt-1">배포하신 Google Apps Script의 [웹앱 URL] 주소를 입력하세요.</p>
+                </div>
+            </div>
+
+            <button onclick="saveConfig()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all">설정 저장</button>
+        </div>
+    </div>
+
+
+    <script>
+        // 1. 역량군 분류 및 매핑용 데이터 정의
+        const groups = {
+            THINKING: { name: "사고 (Thinking)", key: "THINKING", index: 0 },
+            EXECUTION: { name: "실행 (Execution)", key: "EXECUTION", index: 1 },
+            CUSTOMER: { name: "고객 (Customer)", key: "CUSTOMER", index: 2 },
+            RELATIONSHIP: { name: "관계 (Relationship)", key: "RELATIONSHIP", index: 3 },
+            AGILITY: { name: "변화 (Agility)", key: "AGILITY", index: 4 },
+            EXPERTISE: { name: "전문성 (Expertise)", key: "EXPERTISE", index: 5 }
+        };
+
+        // 20개 통합 역량 및 데이터 상세 정의
+        const competencies = {
+            C01: { 
+                id: "C01", 
+                name: "문제인식 및 구조화 역량", 
+                group: "THINKING", 
+                style: "복구자 (Restorative)", 
+                desc: "문제가 어디서 고장이 났는지 직관적으로 알아채고 그것을 원래 상태 혹은 그 이상으로 복원하는 데 뛰어난 분석력과 열정을 발휘합니다. 복잡하고 얽혀 있는 난제나 리스크 요인을 만나도 당황하지 않으며, 오히려 문제의 근본 원인을 하나하나 추적하여 정상화하고 해결책을 찾아내는 과정에서 큰 지적 만족과 에너지를 얻는 실전형 해결사 스타일입니다.", 
+                task: "고객 및 내부 조직의 고질적 정체 리스크를 파악해 정상화하는 업무" 
+            },
+            C02: { 
+                id: "C02", 
+                name: "전략적 사고 역량", 
+                group: "THINKING", 
+                style: "전략 (Strategic)", 
+                desc: "혼돈과 변화 속에서 남들이 발견하지 못하는 미묘한 패턴과 연결 고리를 읽어내는 탁월한 거시적 직관력을 지니고 있습니다. 직면한 문제에 대해 단순히 하나의 실행안만 고집하지 않고, '만약 이런 일이 일어난다면 어떻게 할 것인가?'라는 가설적 질문을 던지며 여러 시나리오를 검토하고, 최종 목표에 도달하기 위한 최선의 지름길과 핵심 대안을 민첩하게 선택합니다.", 
+                task: "미래 지형적 경쟁 우위를 갖추기 위한 로드맵 및 전략 가이드라인 수립 업무" 
+            },
+            C03: { 
+                id: "C03", 
+                name: "기획 및 실행설계 역량", 
+                group: "EXECUTION", 
+                style: "질서 (Discipline)", 
+                desc: "체계성과 예측 가능성을 최고 가치로 삼으며, 일의 세부 계획과 절차를 정합하는 데 비교 불가능한 강점을 보입니다. 목표를 달성하기 위해 장기 실행 전략을 마일스톤과 일일 데일리 태스크 단위로 쪼개어 철저히 정형화하고, 마찰을 최소화하기 위한 우선순위를 사전에 일목요연하게 정리함으로써 예측 불허의 변수 속에서도 안정적인 결과물을 보장하는 견실한 플래너입니다.", 
+                task: "복잡하고 변수가 많은 전사적 주요 과제의 디테일한 수행 타임라인 구축 업무" 
+            },
+            C04: { 
+                id: "C04", 
+                name: "정보수집 및 분석 역량", 
+                group: "THINKING", 
+                style: "탐구심 (Input)", 
+                desc: "새로운 정보, 지식, 경험, 아이디어를 끊임없이 센싱하고 수집하는 활기찬 지적 호기심의 소유자입니다. 수집한 자료들을 단순히 쌓아두는 것에 그치지 않고, 필요할 때 언제든 즉각 꺼내어 실무에 적용할 수 있도록 체계적으로 범주화하고 아카이빙합니다. 남들이 간과하는 정보의 가치를 한눈에 알아보고 이를 융합하여 정량적이고 입체적인 통찰을 제공합니다.", 
+                task: "신규 비즈니스 트렌드 발굴 조사 및 거시적 시장 센싱 아카이빙 업무" 
+            },
+            C05: { 
+                id: "C05", 
+                name: "시장·트렌드 이해 역량", 
+                group: "CUSTOMER", 
+                style: "미래지향 (Futuristic)", 
+                desc: "수평선 너머의 미래가 어떤 모습을 띠고 있을지 머릿속으로 생생하고 구체적으로 그려내는 비전 수립형 스타일입니다. 현재의 제약 조건에 갇히지 않고 트렌드의 흐름과 기술 패러다임 변화를 선제적으로 읽어내어 동료들에게 영감과 방향성을 제시하며, '우리가 나아갈 가치 있는 내일'에 대해 명확한 청사진을 그려내어 전반적인 비즈니스 혁신의 신호탄 역할을 자처합니다.", 
+                task: "트렌드 예측을 바탕으로 신규 비즈니스 프로토타입 방향성을 설계하는 기획 업무" 
+            },
+            C06: { 
+                id: "C06", 
+                name: "고객가치 창출 역량", 
+                group: "CUSTOMER", 
+                style: "최상주의자 (Maximizer)", 
+                desc: "평범하거나 중간 수준에 머무르는 결과물에 만족하지 않으며, 이미 우수한 상태에 있는 것을 '타의 추종을 불허하는 초격차 수준'으로 끌어올리는 극대화에 초점을 맞춤니다. 개인과 조직이 가진 가장 뛰어난 강점과 잠재력에 집중하여 리소스를 배정하고, 강점을 세련되게 세공하여 최상의 부가가치와 고품질 프리미엄 솔루션을 창출해 내는 완벽주의 지향가입니다.", 
+                task: "프리미엄 제품 설계, 맞춤형 고객 마케팅 솔루션 제안 및 가치 극대화 업무" 
+            },
+            C07: { 
+                id: "C07", 
+                name: "관계형성 및 네트워크 역량", 
+                group: "RELATIONSHIP", 
+                style: "관계자 (Relator)", 
+                desc: "표면적이고 일시적인 네트워크를 넘어, 사람 대 사람으로서의 깊이 있는 신뢰와 진정성 있는 유대감을 형성하는 데 탁월한 능력을 발휘합니다. 사내외 파트너들과 한 팀으로서 끈끈한 협조 체계를 구축하고, 서로의 동기를 이해하며 장기적인 관점에서 흔들림 없는 파트너십과 지지 세력을 견고히 축적하는 든든한 동맹가 스타일입니다.", 
+                task: "주요 대외 관계선(Key Account) 조율, 파트너십 유치 등 긴밀한 가치 협조 구축" 
+            },
+            C08: { 
+                id: "C08", 
+                name: "소통 및 메시지 전달 역량", 
+                group: "RELATIONSHIP", 
+                style: "의사소통 (Communication)", 
+                desc: "자신과 조직의 생각, 복잡한 지식, 추상적인 비즈니스 아이디어를 아주 명확하고 설득력 높은 언어와 시각적 메시지로 전환하여 대중의 마음을 움직이는 소통의 대가입니다. 청중의 눈높이와 흥미 요소에 완벽히 정합된 스토리텔링을 활용하여, 다소 딱딱할 수 있는 기안이나 PT도 매력적이고 이해하기 쉽게 전달하여 폭넓은 행동 수용과 열정적인 동참을 이끌어냅니다.", 
+                task: "대형 제안 프레젠테이션(PT), 대표 수주 보고, 사내 변화 수용 스피치 업무" 
+            },
+            C09: { 
+                id: "C09", 
+                name: "협업 및 갈등관리 역량", 
+                group: "RELATIONSHIP", 
+                style: "조화 (Harmony)", 
+                desc: "갈등과 마찰이 조직의 생산성을 좀먹는 가장 큰 요인임을 정확히 인지하고, 상호 이해관계자들의 다양한 충돌 지점을 평화롭게 중재하여 공감대를 형성하는 데 탁월합니다. 극단적이고 소모적인 논쟁을 지양하며, 각 주장의 현실적 합의 규격과 교집합을 기가 막히게 찾아내어 '공동의 실행 목표'로 조율하는 부드러운 화합과 협력의 촉진자입니다.", 
+                task: "타 사업부 간 리소스 마찰 중재, 이해 당사자 간 전략적 절충안 체결 실무" 
+            },
+            C10: { 
+                id: "C10", 
+                name: "업무기준 및 프로세스 관리 역량", 
+                group: "EXECUTION", 
+                style: "조정자 (Arranger)", 
+                desc: "수많은 가용 리소스, 복잡한 인적 자원, 시시각각 변하는 복잡한 태스크를 눈앞에 마주했을 때, 이를 가장 효율적으로 재조직하고 분배할 수 있는 뛰어난 멀티태스킹 조율가입니다. 상황의 흐름에 맞춰 유연하게 프로세스를 다시 정렬하고, 병목 현상을 해소하기 위한 최적의 실행 동선을 기획하여 전체 시스템의 가동 효율성과 퍼포먼스를 배가시킵니다.", 
+                task: "멀티태스킹이 동반되는 조직 운영 총괄, 워크플로우 정립 및 최적화 업무" 
+            },
+            C11: { 
+                id: "C11", 
+                name: "세밀성 및 품질관리 역량", 
+                group: "EXECUTION", 
+                style: "신중함 (Deliberative)", 
+                desc: "돌다리도 두드려보고 건너는 사려 깊은 의사결정의 수호자입니다. 겉으로 보이지 않는 잠재적 위험 요인과 미세한 기입 오차를 기민하게 감지하고 사전 차단하는 철저한 위험 대비형 성향을 보입니다. 일의 후반 단계까지 디테일한 품질 검수와 예방책 배치를 반복 수행함으로써, 최종 의사결정이 가져올 부작용을 원천 차단하는 가장 든든한 품질 파수꾼입니다.", 
+                task: "정밀 보고서 작성, 계약 검수 및 세무·회계상 품질 안전성 통제 업무" 
+            },
+            C12: { 
+                id: "C12", 
+                name: "수리·데이터 활용 역량", 
+                group: "THINKING", 
+                style: "분석가 (Analytical)", 
+                desc: "주관적인 느낌이나 편견, 검증되지 않은 소문을 완벽히 격리하고 오직 정량적이고 신뢰할 수 있는 데이터와 논리적 인과관계를 기반으로 팩트를 입증하는 철저한 지적 검증가입니다. '이 주장을 뒷받침할 구체적인 근거와 지표는 무엇인가?'를 집요하게 추적하여, 현상의 이면에 내포된 핵심적인 패턴을 가시화하고 실증적인 비즈니스 판단 방향을 설계합니다.", 
+                task: "정밀 비즈니스 성과 계량화, 사후 통계 가공 및 데이터 모델 도출 업무" 
+            },
+            C13: { 
+                id: "C13", 
+                name: "의사결정 및 판단 역량", 
+                group: "EXECUTION", 
+                style: "자기확신 (Self-Assurance)", 
+                desc: "자신의 의사결정 역량, 전문 지식, 행동에 대해 내면 깊은 곳에서 우러나오는 단단하고 흔들림 없는 확신을 품고 있습니다. 불확실성이 지배하는 급격한 위기 상황 속에서도 외부의 비판이나 노이즈에 쉽게 흔들리지 않으며, 명확한 기준에 의거하여 주도적으로 돛을 세우고 목적지까지 굳건하게 팀을 리드하는 강직하고 주도적인 가이드 역할을 자처합니다.", 
+                task: "위기 국면 속에서 최종 결정을 돌파하고 이에 따른 일관된 방향타 유지 업무" 
+            },
+            C14: { 
+                id: "C14", 
+                name: "위험관리 역량", 
+                group: "AGILITY", 
+                style: "맥락 (Context)", 
+                desc: "현재의 상황을 정확하게 파악하고 최적의 돌파구를 열기 위해, 역사적 사건과 과거의 선례, 그리고 데이터 흐름의 시발점을 철저하게 되짚어보는 지혜로운 추적자입니다. '우리가 어떻게 이 지점에 도달했는가?'에 대한 심도 있는 맥락 분석을 통해 선배들이 축적한 성공 방정식과 실패 패턴을 발견하고, 이를 통해 현재의 리스크를 탁월하게 예방하는 지혜를 보입니다.", 
+                task: "리스크 프리 방어 기제 수립, 역사적 히스토리 추적을 통한 위기 진압 실무" 
+            },
+            C15: { 
+                id: "C15", 
+                name: "변화대응 및 유연성 역량", 
+                group: "AGILITY", 
+                style: "적응력 (Adaptability)", 
+                desc: "미리 짜인 미래 계획에 집착하기보다, 지금 이 순간 벌어지는 현실적 상황과 예기치 못한 돌발 변수에 기민하고 유연하게 대처하는 뛰어난 유연성의 화신입니다. 급작스러운 기조 전환이나 기획 전면 수정 요구에도 극심한 스트레스 없이 평정심을 유지하며, 변화하는 흐름을 직관적으로 받아들이고 이에 걸맞은 민첩한 실전 대응을 주도합니다.", 
+                task: "급격히 기획이 전환되는 애자일 기반의 TF 주도, 실시간 위기 가동 조율" 
+            },
+            C16: { 
+                id: "C16", 
+                name: "개선 및 혁신 역량", 
+                group: "AGILITY", 
+                style: "착상 (Ideation)", 
+                desc: "서로 전혀 어울릴 것 같지 않은 이질적인 현상과 아이디어를 기발한 방식으로 새롭게 결합하여 완전히 독창적인 개념을 고안하는 '창의적 아이디어 발명가'입니다. 관행적인 일 처리 방식에 끊임없이 흥미로운 의문을 제기하며, 상식을 뛰어넘는 파격적인 실험 기법과 차세대 컨셉을 발굴하고 시도하여 조직에 활기차고 파괴적인 혁신의 공기를 불어넣습니다.", 
+                task: "신상품 창의 제안, 프로세스 완전 파괴형 기획, 생산성 도약 혁신 리드 업무" 
+            },
+            C17: { 
+                id: "C17", 
+                name: "책임감 및 추진력 역량", 
+                group: "EXECUTION", 
+                style: "책임 (Responsibility)", 
+                desc: "자신이 맡은 직무 영역과 공언한 결과에 대해 끝까지 완수해 내겠다는 타협 없는 극도의 정직성과 도덕적 의무감을 보입니다. 한 번 맺은 비즈니스 약속은 어떠한 한계 조건이나 피치 못할 난관이 닥치더라도 자신의 이름을 걸고 완벽하게 충족시켜 내며, 이에 따른 동료들의 절대적이고 확고한 신망을 독차지하는 신뢰의 아이콘입니다.", 
+                task: "마감 시한 준수가 엄격하며 전폭적인 직무 소유가 강력 요구되는 필수 마감 프로젝트" 
+            },
+            C18: { 
+                id: "C18", 
+                name: "전문성 개발 및 지식활용 역량", 
+                group: "EXPERTISE", 
+                style: "학습자 (Learner)", 
+                desc: "아무것도 모르는 상태에서 새로운 전문 지식과 실무 역량을 배우고, 그 분야를 마스터해 나가는 점진적인 성장 과정 자체에서 온 몸으로 희열과 엄청난 동기부여를 얻는 성장형 인재입니다. 기술 변화 주기 속에서도 배움을 멈추지 않으며, 빠르게 신규 기술 트렌드를 스터디하여 조직 내 전파하는 지식 전도사 역할을 활기차게 주도해 나갑니다.", 
+                task: "테크 및 경영 최신 동향의 조직 내 시범 선점 및 내부 공유 강사진 수행 업무" 
+            },
+            C19: { 
+                id: "C19", 
+                name: "디지털 활용 및 문제해결 역량", 
+                group: "EXPERTISE", 
+                style: "행동주의자 (Activator)", 
+                desc: "머릿속으로 백날 구상하고 회의를 거치는 것보다, 일단 작게라도 프로토타입을 만들어 시장과 현장에서 직접 부딪혀 검증하는 것을 최고 덕목으로 삼는 '실행 중심형 행동가'입니다. 결정을 미루거나 소모적으로 지속되는 회의실의 병목을 참지 못하며, 아이디어를 즉시 살아 숨 쉬는 행동 지표와 실행력으로 가속화하는 최강의 액션 드라이버입니다.", 
+                task: "디지털 스마트 도구 도입 테스트 빌딩, 업무 자동화 가속 프로덕트 배치" 
+            },
+            C20: { 
+                id: "C20", 
+                name: "윤리 및 공정성 역량", 
+                group: "EXPERTISE", 
+                style: "신념 (Belief)", 
+                desc: "이익이나 편의를 위해 결코 흔들리지 않는 굳건하고 변함없는 핵심 도덕적 가치와 신념을 삶과 실무의 절대적 뼈대로 수호합니다. 사소한 편법이나 규정 우회 압박에도 단호하게 대처하며, 조직의 장기적 안전성과 윤리 경영 이정표를 엄격히 지켜냅니다. 일관되고 신뢰성 높은 도덕적 무게감을 통해 동료들의 정신적 지주가 되어 줍니다.", 
+                task: "윤리 경영 자문, 기업 지배 구조 감시, ESG 사회 기여 및 도덕 정책 심의 위원" 
+            }
+        };
+
+        // 60문항 정밀 데이터베이스 구성
+        const questions = [
+            { id: 1, cId: "C01", text: "나는 복잡한 상황이 발생했을 때, 핵심적인 문제 요인들과 연관관계를 빠르게 구분하고 구조화합니다." },
+            { id: 2, cId: "C01", text: "업무상 직면한 한계 속에서 해결해야 할 본질적인 최우선 해결 과제를 명확히 제시합니다." },
+            { id: 3, cId: "C01", text: "다양한 현상 뒤에 숨겨진 구조를 분해하여, 가장 빠르고 안전하게 접근할 수 있는 문제 돌파구를 판단합니다." },
+            
+            { id: 4, cId: "C02", text: "조직의 비전과 중장기 경영 방침을 정확하게 독해하고, 매 실무 실행 단계에 반영하고 있습니다." },
+            { id: 5, cId: "C02", text: "일시적인 단기 지표보다 장기적인 이득이 예상되는 거시적 전략 대안을 최우선으로 수립합니다." },
+            { id: 6, cId: "C02", text: "내·외부 시장의 거대한 변화와 트렌드를 고려하여 중장기적 사업 이정표를 정합합니다." },
+            
+            { id: 7, cId: "C04", text: "실무에 필요한 핵심 지식과 동향 데이터를 확보하기 위해 다양한 공식/비공식 채널을 통해 수집합니다." },
+            { id: 8, cId: "C04", text: "수집된 산발적 로우 데이터(Raw Data)를 팩트 기반으로 정리하고 분석하여 유의미한 시사점을 찾아냅니다." },
+            { id: 9, cId: "C04", text: "검증된 조사 분석 결과를 바탕으로 실제 의사결정과 다음 실행 로직에 기여합니다." },
+            
+            { id: 10, cId: "C12", text: "상황을 분석할 때, 주관적인 직관이나 가치관 대신 엄밀한 객관적 지표와 통계 자료를 먼저 살펴봅니다." },
+            { id: 11, cId: "C12", text: "계량화하기 까다로운 정성적 활동까지 최대한 숫자로 변환하여 분석하려고 시도합니다." },
+            { id: 12, cId: "C12", text: "실무 상황의 결과나 원인을 파악하기 위해 통계 분석 도구나 수치 데이터를 적극 조율합니다." },
+
+            { id: 13, cId: "C03", text: "실무 목표 달성에 필요한 수행 과제들의 우선순위와 필요한 시간, 예산 자원을 정밀하게 가늠합니다." },
+            { id: 14, cId: "C03", text: "한정된 자원의 한계를 넘어서기 위해 진행 과정을 마일스톤 기반으로 정교화하여 관리합니다." },
+            { id: 15, cId: "C03", text: "돌발 상황이나 위기 상황에서도 일정 흐름에 차질이 없도록 대체 가능한 안전 기획을 수립해 둡니다." },
+            
+            { id: 16, cId: "C10", text: "조직 내 구축된 공식 규정, 절차서(SOP), 업무 표준을 정확히 숙지하여 이를 충실하게 이행합니다." },
+            { id: 17, cId: "C10", text: "현재 프로세스 중 비효율적인 절차나 비용 낭비 요소를 주기적으로 점검하고 개정안을 도출합니다." },
+            { id: 18, cId: "C10", text: "업무의 실행 속도 및 완성도를 늘 일정하게 보증하기 위한 체계적인 내부 관리 가이드라인을 보유하고 있습니다." },
+            
+            { id: 19, cId: "C11", text: "중요 서류나 산출물을 제출하기 직전, 미세한 기입 오차나 소소한 수식까지 철저히 교차 검증합니다." },
+            { id: 20, cId: "C11", text: "업무 품질이 일정 한계선 미만으로 추락하지 않도록 나만의 까다로운 자가 체크리스트를 실행합니다." },
+            { id: 21, cId: "C11", text: "일의 후반 프로세스까지 디테일을 유지해 최종 완료 문서의 정확도와 품질 마감을 유지합니다." },
+            
+            { id: 22, cId: "C13", text: "의견 대립이 격화되거나 다소 불충분한 정보 환경에서도 실무의 돌파구를 열어줄 최종적 결단을 내립니다." },
+            { id: 23, cId: "C13", text: "나의 결정이 전사 비즈니스 이익과 법적 윤리에 저촉되는지 다각적 방향으로 엄정히 고려해 결정합니다." },
+            { id: 24, cId: "C13", text: "내가 단행한 의사결정으로 이끄는 팀의 성과와 실패 여론에 대해 핑계 대지 않고 명확한 책임을 집니다." },
+            
+            { id: 25, cId: "C17", text: "어려운 도전에 부딪히거나 극심한 피로 속에서도 내가 수립한 실무 과업은 포기하지 않고 책임 이행합니다." },
+            { id: 26, cId: "C17", text: "목표를 반드시 달성하겠다는 투지와 오너십을 갖고 행동 지시를 가동합니다." },
+            { id: 27, cId: "C17", text: "공동의 실무 결과가 미흡할 경우, 남 탓을 하거나 책임을 돌리지 않는 성숙한 태도를 보입니다." },
+
+            { id: 28, cId: "C05", text: "소비자들의 잠재된 욕구, 타사 비즈니스 전개 방식, 시장 변화 전조를 민첩하게 탐색합니다." },
+            { id: 29, cId: "C05", text: "우리 비즈니스 산업 외의 타 업계 최신 트렌드 사례를 접목해 새로운 시장 가치를 기획합니다." },
+            { id: 30, cId: "C05", text: "시장 변화에 부응하는 신규 마케팅 전술이나 타겟 서비스를 신속히 발굴해 반영합니다." },
+            
+            { id: 31, cId: "C06", text: "고객이 실제로 감동하고 필요한 가치가 무엇인지 철저히 탐색하고 깊이 고민합니다." },
+            { id: 32, cId: "C06", text: "고객 불만족 요구나 돌발 요구 조건에 능동적이며 적법하게 맞춤형 솔루션을 제안합니다." },
+            { id: 33, cId: "C06", text: "단기적인 실무 이익보다 장기적인 고객 신뢰 제고 활동을 최고 지표로 설정합니다." },
+
+            { id: 34, cId: "C07", text: "실무 추진에 연계된 사내 타 부서 파트너들과 사적인 한계를 극복하고 두터운 신뢰를 만듭니다." },
+            { id: 35, cId: "C07", text: "이해관계자들과 개방적이고 빈번한 의사교환을 통해 소외되지 않는 네트워크를 구축해 둡니다." },
+            { id: 36, cId: "C07", text: "난처한 업무 협조 요구나 비상 리소스 상황에서도 우호적 관계를 이정표로 삼아 안전히 지지 자원을 도출합니다." },
+            
+            { id: 37, cId: "C08", text: "나의 의도나 핵심 실무 제안이 왜곡되지 않고 직관적으로 가독될 수 있도록 깔끔히 정리해 설득합니다." },
+            { id: 38, cId: "C08", text: "구두 발표나 서면 기안 등 타깃의 눈높이에 최적화된 소통 채널과 전문적 어휘를 다룹니다." },
+            { id: 39, cId: "C08", text: "상대방의 입장을 편견 없이 경청하고, 핵심 설득 요지를 정량적으로 결합하여 동의를 이끕니다." },
+            
+            { id: 40, cId: "C09", text: "팀 및 타 부서 파트너와 공조가 필수일 때 상호 보조를 맞춰 공동 목표를 최고로 우선시해 헌신합니다." },
+            { id: 41, cId: "C09", text: "협동 과정 중 상반된 기조나 감정 대립이 커졌을 때 중립적 관점에서 양방 의견을 중재합니다." },
+            { id: 42, cId: "C09", text: "서로 이해가 충돌하더라도 소모적 논쟁보다 현실적으로 실행 가능한 공동의 합의 규격을 제안합니다." },
+
+            { id: 43, cId: "C14", text: "업무 수행 전 과정에서 발생 가능한 병목, 일정 파탄 및 법적 위험 요인을 선제 감지합니다." },
+            { id: 44, cId: "C14", text: "핵심 리스크 발생 시 기민하게 대처할 수 있는 비상 대응 매뉴얼(Contingency Plan)을 수립해 두고 임합니다." },
+            { id: 45, cId: "C14", text: "과거에 겪었던 프로젝트 위기 선례를 철저히 복기하여, 동일한 위기가 일어나지 않도록 예방 장치를 구축합니다." },
+            
+            { id: 46, cId: "C15", text: "상부의 갑작스러운 전략 노선 변경이나 유동적인 시장 상황에 빠르게 전술을 수정하여 진입합니다." },
+            { id: 47, cId: "C15", text: "내가 기존에 신봉하던 일하는 방식을 고집하지 않고 신규 개발 시스템을 빠르게 독학합니다." },
+            { id: 48, cId: "C15", text: "계획이 다소 꼬이고 지연되는 환경 속에서도 침착함을 유지하며 현 실정에 맞춰 추진합니다." },
+            
+            { id: 49, cId: "C16", text: "관행적으로 오랫동안 지속되어 오던 기존의 업무 방식에 끊임없이 '왜 그래야 하는가?' 질문을 제기합니다." },
+            { id: 50, cId: "C16", text: "팀의 퍼포먼스를 폭발적으로 늘릴 수 있는 파격적인 실험 방식과 도구들을 앞장서 도입합니다." },
+            { id: 51, cId: "C16", text: "아이디어가 좌초되더라도 좌절하지 않고 다른 돌파 방향을 즉각 설계하여 개선합니다." },
+
+            { id: 52, cId: "C18", text: "내 전문 직무 실력을 한 단계 도약시키기 위해 최신 지식이나 동향 자료를 부단히 독서하고 훈련합니다." },
+            { id: 53, cId: "C18", text: "외부 세미나나 이론 수업에서 획득한 전문 노하우를 실제 회사 프로젝트에 직접 구현해 검증합니다." },
+            { id: 54, cId: "C18", text: "내가 발견하고 정리한 핵심 성공 노하우를 조직 동료들에게 교육하며 상호 발전을 유도합니다." },
+            
+            { id: 55, cId: "C19", text: "신규 AI 도구(Generative AI)나 최신 원격 협업 시스템을 업무 생산성 제고를 위해 즉시 대입합니다." },
+            { id: 56, cId: "C19", text: "단순 복사 붙여넣기 같은 비생산적 수동 업무를 매크로나 전용 디지털 유틸리티로 자동화해 냅니다." },
+            { id: 57, cId: "C19", text: "조직 내 데이터 유통 구조를 원활히 관리하는 차세대 도구를 적극 활용합니다." },
+            
+            { id: 58, cId: "C20", text: "사소한 규정 위반이나 편법 유혹 앞에서도 떳떳하고 일관적인 내부 통제 기준을 엄정히 지킵니다." },
+            { id: 59, cId: "C20", text: "단기적인 영업 목표에 흔들려 조직 내 기본 도덕 가치와 안전 규격 타협 요청을 단호히 거부합니다." },
+            { id: 60, cId: "C20", text: "이해당사자를 사적 관계나 이익에 얽매이지 않고 객관적인 법적 기준으로 평등하게 공정 대우합니다." }
+        ];
+
+        // 상태 관리 글로벌 변수
+        let userInfo = { dept: '', position: '', name: '' };
+        let answers = {};
+        let currentPage = 0;
+        const questionsPerPage = 5;
+        const totalQuestions = questions.length;
+
+        // 최종 진단 결과용 변수
+        let scoresByGroup = { THINKING: 0, EXECUTION: 0, CUSTOMER: 0, RELATIONSHIP: 0, AGILITY: 0, EXPERTISE: 0 };
+        let scoresByCompetency = {};
+        let sortedCompetencies = [];
+
+        // 로컬스토리지에서 이전에 저장된 API URL 로드
+        let configSheetUrl = localStorage.getItem('gam_sheet_url') || '';
+
+        window.onload = function() {
+            if(configSheetUrl) {
+                document.getElementById('config-sheet-url').value = configSheetUrl;
+            }
+            lucide.createIcons();
+        };
+
+        // 토스트 알림창
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast-message');
+            const toastText = document.getElementById('toast-text');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastText.textContent = message;
+            if(isSuccess) {
+                toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+            } else {
+                toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 설정 모달 토글
+        function toggleConfigModal() {
+            document.getElementById('config-modal').classList.toggle('hidden');
+        }
+
+        // 설정 저장
+        function saveConfig() {
+            const inputVal = document.getElementById('config-sheet-url').value.trim();
+            configSheetUrl = inputVal;
+            localStorage.setItem('gam_sheet_url', inputVal);
+            showToast("API Endpoint 연동 주소가 성공적으로 설정되었습니다.");
+            toggleConfigModal();
+        }
+
+        // 진단 시작
+        function startAssessment(event) {
+            event.preventDefault();
+            
+            userInfo.dept = document.getElementById('user-dept').value.trim();
+            userInfo.position = document.getElementById('user-position').value.trim();
+            userInfo.name = document.getElementById('user-name').value.trim();
+
+            if(!userInfo.dept || !userInfo.position || !userInfo.name) {
+                showToast("소속, 직급, 이름을 빠짐없이 입력해 주십시오.", false);
+                return;
+            }
+
+            switchView('step-intro', 'step-assessment');
+            loadPage();
+        }
+
+        function switchView(fromId, toId) {
+            document.getElementById(fromId).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(fromId).style.display = 'none';
+                const nextView = document.getElementById(toId);
+                nextView.style.display = 'block';
+                setTimeout(() => {
+                    nextView.classList.add('active');
+                }, 50);
+            }, 300);
+        }
+
+        function loadPage() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, totalQuestions);
+            const currentQuestions = questions.slice(startIndex, endIndex);
+
+            const firstQ = currentQuestions[0];
+            const sampleComp = competencies[firstQ.cId];
+            const groupMeta = groups[sampleComp.group];
+            
+            document.getElementById('group-title').textContent = `${groupMeta.name} 역량 분석 진행중`;
+            document.getElementById('progress-text').textContent = `${endIndex} / ${totalQuestions} 문항 완료`;
+            
+            const percent = (endIndex / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+
+            document.querySelectorAll('.group-nav').forEach(nav => {
+                nav.classList.remove('text-blue-400', 'font-bold', 'border-b', 'border-blue-400');
+                if (nav.getAttribute('data-group') === groupMeta.key) {
+                    nav.classList.add('text-blue-400', 'font-bold', 'border-b', 'border-blue-400');
+                }
+            });
+
+            currentQuestions.forEach((q) => {
+                const compName = competencies[q.cId].name;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'p-5 rounded-2xl bg-gray-900/40 border border-gray-800/80 hover:border-gray-700/50 transition-all';
+                
+                questionDiv.innerHTML = `
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div class="flex-grow">
+                            <span class="text-xs text-blue-500 font-bold uppercase tracking-wider">[역량: ${compName}]</span>
+                            <h4 class="text-white text-base font-medium mt-1 leading-relaxed">${q.id}. ${q.text}</h4>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2 md:gap-4 mt-2">
+                        ${[1, 2, 3, 4, 5].map(score => {
+                            const labels = ["전혀 그렇지 않다", "그렇지 않다", "보통이다", "그렇다", "매우 그렇다"];
+                            const isChecked = answers[q.id] === score;
+                            const activeClass = isChecked ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white border-transparent glow-purple scale-[1.03]' : 'bg-gray-950/60 text-gray-400 border-gray-800 hover:border-gray-700';
+                            return `
+                                <button type="button" onclick="selectScore(${q.id}, ${score})" class="flex flex-col items-center justify-between p-2.5 md:p-3 rounded-xl border text-center transition-all active:scale-95 cursor-pointer ${activeClass}">
+                                    <span class="text-base md:text-lg font-bold font-mono">${score}</span>
+                                    <span class="text-[9px] md:text-[10px] mt-1.5 font-normal break-keep leading-tight">${labels[score - 1]}</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+
+            document.getElementById('btn-prev').style.visibility = currentPage === 0 ? 'hidden' : 'visible';
+            
+            const nextText = document.getElementById('next-btn-text');
+            if (endIndex === totalQuestions) {
+                nextText.textContent = "진단 완료 및 분석하기";
+            } else {
+                nextText.textContent = "다음 단계";
+            }
+        }
+
+        function selectScore(qId, score) {
+            answers[qId] = score;
+            loadPage();
+        }
+
+        function prevPage() {
+            if(currentPage > 0) {
+                currentPage--;
+                loadPage();
+                document.getElementById('step-assessment').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function nextPage() {
+            const startIndex = currentPage * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, totalQuestions);
+            
+            for(let i = startIndex; i < endIndex; i++) {
+                const qId = questions[i].id;
+                if(!answers[qId]) {
+                    showToast("현재 출력된 모든 문항에 점수를 부여해 주셔야 다음 단계로 진입할 수 있습니다.", false);
+                    return;
+                }
+            }
+
+            if(endIndex < totalQuestions) {
+                currentPage++;
+                loadPage();
+                document.getElementById('step-assessment').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                calculateResults();
+            }
+        }
+
+        function calculateResults() {
+            scoresByGroup = { THINKING: 0, EXECUTION: 0, CUSTOMER: 0, RELATIONSHIP: 0, AGILITY: 0, EXPERTISE: 0 };
+            scoresByCompetency = {};
+            const countByComp = {};
+
+            questions.forEach(q => {
+                const score = answers[q.id];
+                if(!scoresByCompetency[q.cId]) {
+                    scoresByCompetency[q.cId] = 0;
+                    countByComp[q.cId] = 0;
+                }
+                scoresByCompetency[q.cId] += score;
+                countByComp[q.cId]++;
+            });
+
+            Object.keys(scoresByCompetency).forEach(cId => {
+                scoresByCompetency[cId] = parseFloat((scoresByCompetency[cId] / countByComp[cId]).toFixed(2));
+            });
+
+            const countByGroup = { THINKING: 0, EXECUTION: 0, CUSTOMER: 0, RELATIONSHIP: 0, AGILITY: 0, EXPERTISE: 0 };
+            Object.keys(scoresByCompetency).forEach(cId => {
+                const comp = competencies[cId];
+                scoresByGroup[comp.group] += scoresByCompetency[cId];
+                countByGroup[comp.group]++;
+            });
+
+            Object.keys(scoresByGroup).forEach(gKey => {
+                scoresByGroup[gKey] = parseFloat((scoresByGroup[gKey] / countByGroup[gKey]).toFixed(2));
+            });
+
+            sortedCompetencies = Object.keys(scoresByCompetency).map(cId => {
+                return { id: cId, name: competencies[cId].name, score: scoresByCompetency[cId] };
+            }).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+
+            switchView('step-assessment', 'step-result');
+
+            document.getElementById('res-dept').textContent = userInfo.dept;
+            document.getElementById('res-position').textContent = userInfo.position;
+            document.getElementById('res-name').textContent = userInfo.name;
+
+            drawRadarChart();
+            renderGroupScores();
+            renderTop5Strengths();
+            renderDevelopmentalFeedback();
+        }
+
+        // SVG 레이더 차트 동적 생성
+        function drawRadarChart() {
+            const chartParent = document.getElementById('chart-parent');
+            chartParent.innerHTML = '';
+
+            const cx = 150;
+            const cy = 150;
+            const rMax = 100;
+            const labels = ["사고", "실행", "고객", "관계", "변화", "전문성"];
+            const keys = ["THINKING", "EXECUTION", "CUSTOMER", "RELATIONSHIP", "AGILITY", "EXPERTISE"];
+            const numPoints = keys.length;
+
+            function getCoords(index, val) {
+                const angle = (Math.PI * 2 / numPoints) * index - Math.PI / 2;
+                const r = (val / 5) * rMax;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                return { x, y };
+            }
+
+            let svgHtml = `<svg viewBox="0 0 300 300" class="w-full h-full">`;
+            
+            for (let level = 5; level >= 1; level--) {
+                let points = [];
+                for (let i = 0; i < numPoints; i++) {
+                    const coord = getCoords(i, level);
+                    points.push(`${coord.x},${coord.y}`);
+                }
+                const opacity = 0.05 + (level * 0.03);
+                svgHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="rgba(255, 255, 255, ${opacity})" stroke-width="1" />`;
+                const textCoord = getCoords(0, level);
+                svgHtml += `<text x="${textCoord.x + 4}" y="${textCoord.y + 10}" fill="#4B5563" font-size="8">${level}</text>`;
+            }
+
+            for (let i = 0; i < numPoints; i++) {
+                const outer = getCoords(i, 5);
+                svgHtml += `<line x1="${cx}" y1="${cy}" x2="${outer.x}" y2="${outer.y}" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" stroke-dasharray="2,2" />`;
+            }
+
+            for (let i = 0; i < numPoints; i++) {
+                const labelCoord = getCoords(i, 5.4);
+                let textAnchor = "middle";
+                if (labelCoord.x < cx - 10) textAnchor = "end";
+                if (labelCoord.x > cx + 10) textAnchor = "start";
+                svgHtml += `<text x="${labelCoord.x}" y="${labelCoord.y + 3}" fill="#9CA3AF" font-size="11" font-weight="bold" text-anchor="${textAnchor}">${labels[i]}</text>`;
+            }
+
+            let scorePoints = [];
+            for (let i = 0; i < numPoints; i++) {
+                const score = scoresByGroup[keys[i]];
+                const coord = getCoords(i, score);
+                scorePoints.push(`${coord.x},${coord.y}`);
+            }
+
+            svgHtml += `
+                <defs>
+                    <radialGradient id="grad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="rgba(37, 99, 235, 0.15)" />
+                        <stop offset="100%" stop-color="rgba(124, 58, 237, 0.4)" />
+                    </radialGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+            `;
+
+            svgHtml += `<polygon points="${scorePoints.join(' ')}" fill="url(#grad)" stroke="#7C3AED" stroke-width="2.5" filter="url(#glow)" />`;
+
+            for (let i = 0; i < numPoints; i++) {
+                const score = scoresByGroup[keys[i]];
+                const coord = getCoords(i, score);
+                svgHtml += `
+                    <circle cx="${coord.x}" cy="${coord.y}" r="4" fill="#2563EB" stroke="#ffffff" stroke-width="1.5" />
+                    <text x="${coord.x}" y="${coord.y - 7}" fill="#ffffff" font-size="9" font-weight="bold" font-family="monospace" text-anchor="middle">${score}</text>
+                `;
+            }
+
+            svgHtml += `</svg>`;
+            chartParent.innerHTML = svgHtml;
+        }
+
+        function renderGroupScores() {
+            const container = document.getElementById('group-score-bars');
+            container.innerHTML = '';
+
+            const keys = ["THINKING", "EXECUTION", "CUSTOMER", "RELATIONSHIP", "AGILITY", "EXPERTISE"];
+            const colors = {
+                THINKING: 'from-blue-600 to-cyan-500',
+                EXECUTION: 'from-emerald-600 to-teal-500',
+                CUSTOMER: 'from-amber-500 to-orange-500',
+                RELATIONSHIP: 'from-purple-600 to-pink-500',
+                AGILITY: 'from-indigo-600 to-blue-500',
+                EXPERTISE: 'from-red-600 to-rose-500'
+            };
+
+            keys.forEach(key => {
+                const score = scoresByGroup[key];
+                const pct = (score / 5) * 100;
+                
+                const item = document.createElement('div');
+                item.className = 'space-y-1.5';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-gray-300">${groups[key].name}</span>
+                        <span class="font-bold text-gray-100 font-mono">${score} / 5.00</span>
+                    </div>
+                    <div class="w-full bg-gray-950 h-2.5 rounded-full overflow-hidden border border-gray-900 flex items-center">
+                        <div class="bg-gradient-to-r ${colors[key]} h-full rounded-full" style="width: ${pct}%"></div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderTop5Strengths() {
+            const container = document.getElementById('top5-strengths-container');
+            container.innerHTML = '';
+
+            for (let i = 0; i < 5; i++) {
+                const itemData = sortedCompetencies[i];
+                const meta = competencies[itemData.id];
+                const groupName = groups[meta.group].name;
+
+                const card = document.createElement('div');
+                card.className = `p-6 rounded-2xl bg-gray-950/60 border border-gray-800/80 hover:border-purple-500/30 transition-all flex flex-col md:flex-row gap-4 items-start relative overflow-hidden`;
+                card.innerHTML = `
+                    <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-tr from-purple-600 to-blue-600 rounded-xl flex flex-col items-center justify-center font-bold text-white shadow-lg">
+                        <span class="text-[9px] uppercase tracking-widest text-purple-200">Top</span>
+                        <span class="text-xl font-extrabold leading-none">${i + 1}</span>
+                    </div>
+
+                    <div class="flex-grow space-y-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-xs bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md border border-blue-500/20">${groupName}</span>
+                            <span class="text-xs bg-purple-500/10 text-purple-400 font-bold px-2.5 py-1 rounded-md border border-purple-500/20">강점 스타일: ${meta.style}</span>
+                            <span class="text-sm font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 ml-auto">${itemData.score} 점</span>
+                        </div>
+                        <h4 class="text-white text-lg font-bold">${meta.name}</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed text-justify bg-gray-900/30 p-4 rounded-xl border border-gray-800/40">${meta.desc}</p>
+                        
+                        <div class="mt-3 p-3 bg-blue-550/10 border border-blue-900/30 rounded-xl flex items-start space-x-2">
+                            <span class="text-xs text-blue-400 font-bold flex-shrink-0 mt-0.5">🎯 추천 실무:</span>
+                            <p class="text-gray-300 text-xs leading-relaxed font-semibold">${meta.task}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function renderDevelopmentalFeedback() {
+            const feedbackContainer = document.getElementById('developmental-feedback');
+            feedbackContainer.innerHTML = '';
+
+            const strongestComp = sortedCompetencies[0];
+            const meta = competencies[strongestComp.id];
+
+            const p1 = document.createElement('p');
+            p1.innerHTML = `임직원 <span class="text-white font-bold">${userInfo.name} ${userInfo.position}님</span>의 종합 역량 분석 결과, 가장 두드러지게 기여도가 높은 초격차 강점 무기는 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-bold">${meta.name}</span>인 것으로 분석되었습니다.`;
+
+            const p2 = document.createElement('p');
+            p2.className = "mt-2 text-justify";
+            p2.innerHTML = `귀하는 특히 <span class="text-gray-200 font-semibold">${meta.style}</span> 관점의 선천적 직관력을 다루어 타인이 예측하지 못한 방향성을 매끄럽게 제어해 내는 본원적 기량이 있습니다. 현업에서 <span class="text-gray-200 font-semibold">"${meta.task}"</span>와 관련한 미션에 조력자가 아닌 오너십 소유자로 참여할 때, 비즈니스 성과와 몰입 만족도를 동시에 극대화시킬 것입니다.`;
+
+            const p3 = document.createElement('p');
+            p3.className = "mt-2 text-xs text-gray-400 italic";
+            p3.textContent = "※ 본 피드백은 귀하의 실전 행동 양식을 자가 진단한 데이터를 갤럽의 34개 고유 역량 스키마와 정합한 정밀 결과입니다. 본인이 기록한 강점 기저를 바탕으로 나만의 실질적 커리어 성장 나침반으로 삼고 비즈니스 무기로 연마해 가십시오.";
+
+            feedbackContainer.appendChild(p1);
+            feedbackContainer.appendChild(p2);
+            feedbackContainer.appendChild(p3);
+        }
+
+        // PDF 다운로드 저장
+        function saveAsPDF() {
+            const element = document.getElementById('pdf-export-area');
+            const saveBtn = document.querySelector('button[onclick="saveAsPDF()"]');
+            
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>PDF 리포트 생성 중...</span>
+            `;
+
+            const opt = {
+                margin:       [12, 12, 12, 12],
+                filename:     `GAM_역량종합리포트_${userInfo.name}_${userInfo.position}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0B0F19' },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save()
+                .then(() => {
+                    saveBtn.innerHTML = originalHtml;
+                    showToast("종합 역량 리포트 PDF가 안전하게 내보내기 되었습니다.");
+                })
+                .catch(err => {
+                    saveBtn.innerHTML = originalHtml;
+                    showToast("PDF 생성 처리 중 오류가 발생했습니다.", false);
+                    console.error(err);
+                });
+        }
+
+        // Vercel에서 구글 API 주소(Web App URL)로 데이터 수집 요청을 직접 전송
+        function submitResultToGoogle() {
+            const btn = document.getElementById('btn-submit-sheets');
+
+            if(!configSheetUrl) {
+                showToast("스프레드시트 API 주소가 설정되지 않았습니다. 우측 상단 기어 아이콘을 눌러 배포된 웹앱 주소를 연동해주세요.", false);
+                toggleConfigModal();
+                return;
+            }
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>데이터 실시간 연동 중...</span>
+            `;
+
+            const payload = {
+                timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+                department: userInfo.dept,
+                position: userInfo.position,
+                name: userInfo.name,
+                score_thinking: scoresByGroup.THINKING,
+                score_execution: scoresByGroup.EXECUTION,
+                score_customer: scoresByGroup.CUSTOMER,
+                score_relationship: scoresByGroup.RELATIONSHIP,
+                score_agility: scoresByGroup.AGILITY,
+                score_expertise: scoresByGroup.EXPERTISE,
+                strength_1: sortedCompetencies[0].name,
+                strength_2: sortedCompetencies[1].name,
+                strength_3: sortedCompetencies[2].name,
+                strength_4: sortedCompetencies[3].name,
+                strength_5: sortedCompetencies[4].name
+            };
+
+            // CORS 프리플라이트 제약 우회를 위한 text/plain 처리 및 리디렉션 대응
+            fetch(configSheetUrl, {
+                method: "POST",
+                mode: "no-cors", // 구글 리디렉션 흐름 대응용 설정
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                btn.innerHTML = originalText;
+                showToast("구글 스프레드시트 데이터베이스에 성공적으로 적재되었습니다!");
+            })
+            .catch(error => {
+                btn.innerHTML = originalText;
+                showToast("데이터 전송 중 오류가 발생했습니다. 연동 주소를 확인하세요.", false);
+                console.error("API 전송 에러:", error);
+            });
+        }
+
+        // 요약 리포트 클립보드 복사
+        function copyToClipboardText() {
+            const textToCopy = `
+[GAM CONSULTING 역량 및 강점 진단 요약]
+* 대상자: ${userInfo.dept} / ${userInfo.position} ${userInfo.name}
+* 대역량군 성적 요약:
+  - 사고: ${scoresByGroup.THINKING} / 5.0
+  - 실행: ${scoresByGroup.EXECUTION} / 5.0
+  - 고객: ${scoresByGroup.CUSTOMER} / 5.0
+  - 관계: ${scoresByGroup.RELATIONSHIP} / 5.0
+  - 변화: ${scoresByGroup.AGILITY} / 5.0
+  - 전문성: ${scoresByGroup.EXPERTISE} / 5.0
+
+* Top 5 핵심 역량 & 강점 스타일 매핑:
+  1위: ${sortedCompetencies[0].name} (스타일: ${competencies[sortedCompetencies[0].id].style})
+  2위: ${sortedCompetencies[1].name} (스타일: ${competencies[sortedCompetencies[1].id].style})
+  3위: ${sortedCompetencies[2].name} (스타일: ${competencies[sortedCompetencies[2].id].style})
+  4위: ${sortedCompetencies[3].name} (스타일: ${competencies[sortedCompetencies[3].id].style})
+  5위: ${sortedCompetencies[4].name} (스타일: ${competencies[sortedCompetencies[4].id].style})
+            `.trim();
+
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("종합 리포트 요약본이 클립보드에 복사되었습니다!");
+                } else {
+                    showToast("복사 권한이 활성화되지 않았습니다.", false);
+                }
+            } catch (err) {
+                showToast("복사 중 에러가 발생했습니다.", false);
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        // 리셋 및 재시작
+        function resetAssessment() {
+            userInfo = { dept: '', position: '', name: '' };
+            answers = {};
+            currentPage = 0;
+            
+            document.getElementById('user-dept').value = '';
+            document.getElementById('user-position').value = '';
+            document.getElementById('user-name').value = '';
+
+            switchView('step-result', 'step-intro');
+        }
+    </script>
+</body>
+</html>
