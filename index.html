@@ -592,7 +592,7 @@
         let sortedCompetencies = [];
 
         // GAS Web App URL 하드코딩 (기어 아이콘으로 변경 가능)
-        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbzbKRsXsaNTZARTTYhTfH6CUJsJXLFFYmSzbrn8ev1suu365BkQM7xz05qXmW2cnmU/exec";
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbxDq9rG1awyBTZlfE_Z9umTe9p0Zfo89c03oZ_OdJB4AzhEOvK0vq5HCG2gn9SgP-0u/exec";
         let configSheetUrl = localStorage.getItem('gam_sheet_url') || DEFAULT_SHEET_URL;
 
         window.onload = function() {
@@ -1071,16 +1071,11 @@
                 strength_5: sortedCompetencies[4].name
             };
 
-            // Fix ③: mode:"no-cors" 응답은 opaque response로 서버 성공 여부를 확인할 수 없음.
-            // 성공 토스트는 "전송 요청 완료" 수준으로만 표시하고, 실제 적재 확인은 Sheets에서 수행하도록 안내.
-            fetch(configSheetUrl, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: JSON.stringify(payload)
-            })
+            // GET + URL 파라미터 방식 (POST body 파싱 문제 회피, GAS 호환성 최대화)
+            const url = new URL(configSheetUrl);
+            Object.entries(payload).forEach(([k, v]) => url.searchParams.set(k, v));
+
+            fetch(url.toString(), { mode: "no-cors" })
             .then(() => {
                 btn.innerHTML = originalText;
                 showToast("제출 요청이 전송되었습니다. Google Sheets에서 결과를 확인해 주세요.");
